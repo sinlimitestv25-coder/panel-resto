@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { createTenant, isSlugTaken, listTenants, slugify } from "@/lib/db";
 import { hashTenantPassword } from "@/lib/auth";
 import OwnerGate from "@/components/OwnerGate";
+import TenantProfileFields from "@/components/TenantProfileFields";
 import type { Tenant } from "@/lib/types";
 
 export default function AdminHome() {
@@ -84,6 +85,12 @@ function NewTenantForm({ onCreated }: { onCreated: () => void }) {
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
   const [slugEdited, setSlugEdited] = useState(false);
+  const [description, setDescription] = useState("");
+  const [address, setAddress] = useState("");
+  const [phone, setPhone] = useState("");
+  const [themeColor, setThemeColor] = useState("#b45309");
+  const [logoUrl, setLogoUrl] = useState<string | null>(null);
+  const [coverUrl, setCoverUrl] = useState<string | null>(null);
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
@@ -109,12 +116,12 @@ function NewTenantForm({ onCreated }: { onCreated: () => void }) {
     await createTenant({
       name: name.trim(),
       slug: finalSlug,
-      description: "",
-      themeColor: "#b45309",
-      logoUrl: null,
-      coverUrl: null,
-      address: "",
-      phone: "",
+      description: description.trim(),
+      themeColor,
+      logoUrl,
+      coverUrl,
+      address: address.trim(),
+      phone: phone.trim(),
       passwordHash: hashTenantPassword(password),
     });
     setSaving(false);
@@ -124,39 +131,34 @@ function NewTenantForm({ onCreated }: { onCreated: () => void }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-xl border border-neutral-200 bg-white p-4 space-y-3"
+      className="rounded-xl border border-neutral-200 bg-white p-4 space-y-4"
     >
+      <TenantProfileFields
+        name={name}
+        onNameChange={(v) => {
+          setName(v);
+          if (!slugEdited) setSlug(slugify(v));
+        }}
+        slug={slug}
+        onSlugChange={(v) => {
+          setSlugEdited(true);
+          setSlug(v);
+        }}
+        description={description}
+        onDescriptionChange={setDescription}
+        address={address}
+        onAddressChange={setAddress}
+        phone={phone}
+        onPhoneChange={setPhone}
+        themeColor={themeColor}
+        onThemeColorChange={setThemeColor}
+        logoUrl={logoUrl}
+        onLogoChange={setLogoUrl}
+        coverUrl={coverUrl}
+        onCoverChange={setCoverUrl}
+      />
       <div>
-        <label className="block text-sm font-medium mb-1">Nombre del restaurante</label>
-        <input
-          value={name}
-          onChange={(e) => {
-            setName(e.target.value);
-            if (!slugEdited) setSlug(slugify(e.target.value));
-          }}
-          className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm"
-          placeholder="Ej: La Esquina"
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium mb-1">
-          URL del menú público
-        </label>
-        <div className="flex items-center text-sm text-neutral-500">
-          <span className="mr-1">/</span>
-          <input
-            value={slug}
-            onChange={(e) => {
-              setSlugEdited(true);
-              setSlug(e.target.value);
-            }}
-            className="flex-1 rounded-lg border border-neutral-300 px-3 py-2 text-sm text-neutral-900"
-            placeholder="la-esquina"
-          />
-        </div>
-      </div>
-      <div>
-        <label className="block text-sm font-medium mb-1">
+        <label className="block text-xs font-medium mb-1">
           Contraseña para el panel del restaurante
         </label>
         <input

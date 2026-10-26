@@ -3,8 +3,9 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useTenant } from "@/lib/tenant-context";
-import { deleteTenant, fileToDataUrl, isSlugTaken, slugify, updateTenant } from "@/lib/db";
+import { deleteTenant, isSlugTaken, slugify, updateTenant } from "@/lib/db";
 import { hashTenantPassword } from "@/lib/auth";
+import TenantProfileFields from "@/components/TenantProfileFields";
 
 export default function AjustesPage() {
   const { tenant, refresh } = useTenant();
@@ -22,18 +23,6 @@ export default function AjustesPage() {
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
   const [saving, setSaving] = useState(false);
-
-  async function handleLogo(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setLogoUrl(await fileToDataUrl(file));
-  }
-
-  async function handleCover(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setCoverUrl(await fileToDataUrl(file));
-  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -84,53 +73,24 @@ export default function AjustesPage() {
   return (
     <div className="space-y-6 max-w-xl">
       <form onSubmit={handleSubmit} className="rounded-xl border border-neutral-200 bg-white p-4 space-y-4">
-        <div className="grid gap-3 sm:grid-cols-2">
-          <div>
-            <label className="block text-xs font-medium mb-1">Nombre</label>
-            <input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm"
-            />
-          </div>
-          <div>
-            <label className="block text-xs font-medium mb-1">URL (/slug)</label>
-            <input
-              value={slug}
-              onChange={(e) => setSlug(e.target.value)}
-              className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm"
-            />
-          </div>
-        </div>
-
-        <div>
-          <label className="block text-xs font-medium mb-1">Descripción</label>
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            rows={2}
-            className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm"
-          />
-        </div>
-
-        <div className="grid gap-3 sm:grid-cols-2">
-          <div>
-            <label className="block text-xs font-medium mb-1">Dirección</label>
-            <input
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm"
-            />
-          </div>
-          <div>
-            <label className="block text-xs font-medium mb-1">Teléfono</label>
-            <input
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm"
-            />
-          </div>
-        </div>
+        <TenantProfileFields
+          name={name}
+          onNameChange={setName}
+          slug={slug}
+          onSlugChange={setSlug}
+          description={description}
+          onDescriptionChange={setDescription}
+          address={address}
+          onAddressChange={setAddress}
+          phone={phone}
+          onPhoneChange={setPhone}
+          themeColor={themeColor}
+          onThemeColorChange={setThemeColor}
+          logoUrl={logoUrl}
+          onLogoChange={setLogoUrl}
+          coverUrl={coverUrl}
+          onCoverChange={setCoverUrl}
+        />
 
         <div>
           <label className="block text-xs font-medium mb-1">
@@ -143,43 +103,6 @@ export default function AjustesPage() {
             className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm"
             placeholder="Mínimo 4 caracteres"
           />
-        </div>
-
-        <div>
-          <label className="block text-xs font-medium mb-1">Color del panel</label>
-          <input
-            type="color"
-            value={themeColor}
-            onChange={(e) => setThemeColor(e.target.value)}
-            className="h-9 w-16 rounded border border-neutral-300"
-          />
-        </div>
-
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div>
-            <label className="block text-xs font-medium mb-1">Logo</label>
-            <div className="flex items-center gap-3">
-              <div className="h-12 w-12 rounded-lg bg-neutral-100 overflow-hidden shrink-0">
-                {logoUrl && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={logoUrl} alt="Logo" className="h-full w-full object-cover" />
-                )}
-              </div>
-              <input type="file" accept="image/*" onChange={handleLogo} className="text-sm" />
-            </div>
-          </div>
-          <div>
-            <label className="block text-xs font-medium mb-1">Foto de portada</label>
-            <div className="flex items-center gap-3">
-              <div className="h-12 w-20 rounded-lg bg-neutral-100 overflow-hidden shrink-0">
-                {coverUrl && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={coverUrl} alt="Portada" className="h-full w-full object-cover" />
-                )}
-              </div>
-              <input type="file" accept="image/*" onChange={handleCover} className="text-sm" />
-            </div>
-          </div>
         </div>
 
         {error && <p className="text-sm text-red-600">{error}</p>}

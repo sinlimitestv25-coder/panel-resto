@@ -1,36 +1,36 @@
-# v0.4.1 — Copia completa y autónoma ✅
+# v0.5 — Copia completa y autónoma ✅
 
 Esta carpeta es un **proyecto completo**, no un parche. Se probó de cero
-(`npm install` + `npm run build`) y compiló sin errores. Podés copiarla
-entera para armar tu repo de GitHub sin preocuparte por archivos viejos o
-carpetas que falten borrar.
+(`npm install` + `npm run build`) y compiló sin errores.
 
-## Cómo usarla
-1. Copiá toda esta carpeta (`versiones/v0.4.1/`) a donde vayas a iniciar tu
-   repo, o reemplazá el contenido de tu repo existente por esto (borrando
-   primero lo viejo, para no dejar nada suelto).
-2. Corré `npm install` (no se incluye `node_modules/` para no pesar; se
-   regenera solo y de todas formas no se sube a GitHub).
-3. `npm run dev` para probar local, o subilo a GitHub/Vercel como siempre.
+## ⚠️ Importante antes de subir esta versión
+Tu repo en GitHub (`panel-resto`) todavía tiene una carpeta vieja colgada
+de antes, `src/app/admin/[tenantId]/`, que ninguna versión nueva puede
+borrar por sí sola (subir archivos arrastrándolos en GitHub nunca borra,
+solo agrega/actualiza). Es un paso de una sola vez:
+
+1. En github.com, entrá a tu repo y borrá la carpeta `src/app/admin/[tenantId]`
+   completa (podés abrir el editor del navegador apretando `.` y borrarla
+   de un clic).
+2. Recién ahí arrastrá esta carpeta (`versiones/v0.5`) para subirla.
+
+Después de este único paso, no debería volver a pasar — mientras ninguna
+versión futura vuelva a renombrar o sacar una carpeta.
+
+## Qué cambió en esta versión
+- Se sacaron del proyecto los íconos de ejemplo que trae Next.js por
+  defecto (`public/file.svg`, `globe.svg`, `next.svg`, `vercel.svg`,
+  `window.svg`) — no se usaban en ninguna pantalla, era basura del
+  scaffolding inicial.
 
 ## Qué incluye (acumulado de todas las versiones hasta acá)
-- Panel multitenant: `/admin` (dueño, con login) y `/admin/<slug>` (panel
-  propio de cada restaurante, con su propia contraseña).
-- Alta de restaurante completa: nombre, slug, descripción, dirección,
-  teléfono, color, logo, portada y contraseña, todo en el mismo formulario.
-- Menú por categorías (desayuno, almuerzo, bebidas, postres, etc.) con
-  fotos por plato.
-- Galería de fotos del restaurante.
-- Generación de QR con descarga en PNG, apuntando al menú público.
-- Menú público mobile-first por slug (`/<slug>`).
-- Panel admin revisado y corregido para celular (sin desbordes ni
-  contenido invisible).
-- Datos en `localStorage` (sin Supabase todavía — prototipo).
-- Restaurante demo: "La Esquina" (contraseña `esquina123`). Contraseña de
-  administrador: la que hayas creado vos la primera vez que entraste a
-  `/admin` (no viene precargada).
+Igual que v0.4.1 (ver `versiones/v0.4.1/NOTAS.md` para el detalle completo
+de funcionalidades): panel multitenant con login, alta de restaurante
+completa, menú por categorías con fotos, galería, QR, menú público
+mobile-first, panel admin revisado para celular.
 
-## Importante (sigue siendo prototipo)
-Las contraseñas usan un hash simple en el navegador, no es seguridad real
-— eso llega cuando conectemos Supabase. Ver `CHANGELOG.md` en la raíz del
-proyecto para el detalle versión por versión.
+## Cómo usarla
+1. Hacé la limpieza de arriba (una sola vez).
+2. Copiá toda esta carpeta a tu repo (o reemplazá el contenido entero).
+3. `npm install`.
+4. `npm run dev` para probar local, o subila a GitHub/Vercel.

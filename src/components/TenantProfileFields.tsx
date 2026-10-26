@@ -114,7 +114,7 @@ export default function TenantProfileFields({
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label className="block text-xs font-medium mb-1">Logo</label>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
             <div className="h-12 w-12 rounded-lg bg-neutral-100 overflow-hidden shrink-0">
               {logoUrl && (
                 // eslint-disable-next-line @next/next/no-img-element
@@ -125,13 +125,13 @@ export default function TenantProfileFields({
               type="file"
               accept="image/*"
               onChange={(e) => handleFile(e, onLogoChange)}
-              className="text-sm"
+              className="text-sm min-w-0 max-w-full"
             />
           </div>
         </div>
         <div>
           <label className="block text-xs font-medium mb-1">Foto de portada</label>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
             <div className="h-12 w-20 rounded-lg bg-neutral-100 overflow-hidden shrink-0">
               {coverUrl && (
                 // eslint-disable-next-line @next/next/no-img-element
@@ -142,7 +142,7 @@ export default function TenantProfileFields({
               type="file"
               accept="image/*"
               onChange={(e) => handleFile(e, onCoverChange)}
-              className="text-sm"
+              className="text-sm min-w-0 max-w-full"
             />
           </div>
         </div>

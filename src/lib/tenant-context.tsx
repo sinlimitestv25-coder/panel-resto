@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
-import { getTenant } from "./db";
+import { getTenantBySlug } from "./db";
 import type { Tenant } from "./types";
 
 type TenantContextValue = {
@@ -12,17 +12,17 @@ type TenantContextValue = {
 const TenantContext = createContext<TenantContextValue | null>(null);
 
 export function TenantProvider({
-  tenantId,
+  slug,
   children,
 }: {
-  tenantId: string;
+  slug: string;
   children: React.ReactNode;
 }) {
   const [tenant, setTenant] = useState<Tenant | null>(null);
   const [notFound, setNotFound] = useState(false);
 
   async function refresh() {
-    const t = await getTenant(tenantId);
+    const t = await getTenantBySlug(slug);
     if (!t) {
       setNotFound(true);
       return;
@@ -33,7 +33,7 @@ export function TenantProvider({
   useEffect(() => {
     refresh();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tenantId]);
+  }, [slug]);
 
   if (notFound) {
     return (

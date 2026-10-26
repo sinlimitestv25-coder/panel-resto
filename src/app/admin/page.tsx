@@ -49,7 +49,7 @@ export default function AdminHome() {
           {tenants.map((t) => (
             <Link
               key={t.id}
-              href={`/admin/${t.id}`}
+              href={`/admin/${t.slug}`}
               className="rounded-xl border border-neutral-200 bg-white p-4 hover:border-neutral-400 transition flex gap-3 items-center"
             >
               <div

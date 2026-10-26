@@ -7,7 +7,7 @@ import type { Category, GalleryPhoto, MenuItem, Tenant } from "./types";
 // Las funciones son async a propósito, con la misma forma que van a tener
 // las futuras consultas a Supabase, para que el reemplazo sea directo.
 
-const STORAGE_KEY = "panelresto_db_v1";
+const STORAGE_KEY = "panelresto_db_v2";
 
 function readDb(): Db {
   if (typeof window === "undefined") return buildSeed();

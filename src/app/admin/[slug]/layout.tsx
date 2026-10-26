@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname, useParams } from "next/navigation";
 import { TenantProvider, useTenant } from "@/lib/tenant-context";
+import TenantGate from "@/components/TenantGate";
 
 const TABS = [
   { href: "", label: "Resumen" },
@@ -54,10 +55,12 @@ export default function TenantLayout({ children }: { children: React.ReactNode }
 
   return (
     <TenantProvider slug={slug}>
-      <div className="space-y-6">
-        <TabNav slug={slug} />
-        {children}
-      </div>
+      <TenantGate>
+        <div className="space-y-6">
+          <TabNav slug={slug} />
+          {children}
+        </div>
+      </TenantGate>
     </TenantProvider>
   );
 }

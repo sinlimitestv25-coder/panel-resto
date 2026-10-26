@@ -3,9 +3,19 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { createTenant, isSlugTaken, listTenants, slugify } from "@/lib/db";
+import { hashTenantPassword } from "@/lib/auth";
+import OwnerGate from "@/components/OwnerGate";
 import type { Tenant } from "@/lib/types";
 
 export default function AdminHome() {
+  return (
+    <OwnerGate>
+      <AdminHomeContent />
+    </OwnerGate>
+  );
+}
+
+function AdminHomeContent() {
   const [tenants, setTenants] = useState<Tenant[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -74,6 +84,7 @@ function NewTenantForm({ onCreated }: { onCreated: () => void }) {
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
   const [slugEdited, setSlugEdited] = useState(false);
+  const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
@@ -83,6 +94,10 @@ function NewTenantForm({ onCreated }: { onCreated: () => void }) {
     const finalSlug = slugify(slug || name);
     if (!name.trim() || !finalSlug) {
       setError("Completá el nombre del restaurante.");
+      return;
+    }
+    if (password.length < 4) {
+      setError("La contraseña del restaurante debe tener al menos 4 caracteres.");
       return;
     }
     setSaving(true);
@@ -100,6 +115,7 @@ function NewTenantForm({ onCreated }: { onCreated: () => void }) {
       coverUrl: null,
       address: "",
       phone: "",
+      passwordHash: hashTenantPassword(password),
     });
     setSaving(false);
     onCreated();
@@ -138,6 +154,21 @@ function NewTenantForm({ onCreated }: { onCreated: () => void }) {
             placeholder="la-esquina"
           />
         </div>
+      </div>
+      <div>
+        <label className="block text-sm font-medium mb-1">
+          Contraseña para el panel del restaurante
+        </label>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm"
+          placeholder="Mínimo 4 caracteres"
+        />
+        <p className="mt-1 text-xs text-neutral-400">
+          Se la pasás al restaurante junto con el link /admin/{slug || "su-slug"}.
+        </p>
       </div>
       {error && <p className="text-sm text-red-600">{error}</p>}
       <button

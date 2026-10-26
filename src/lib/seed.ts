@@ -1,3 +1,4 @@
+import { simpleHash } from "./auth";
 import type { Category, GalleryPhoto, MenuItem, Tenant } from "./types";
 
 export type Db = {
@@ -23,6 +24,7 @@ export function buildSeed(): Db {
       coverUrl: null,
       address: "Av. Siempre Viva 123",
       phone: "+54 9 11 1234-5678",
+      passwordHash: simpleHash("esquina123"),
       createdAt: now,
     },
   ];

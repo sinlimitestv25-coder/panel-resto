@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useTenant } from "@/lib/tenant-context";
 import { deleteTenant, fileToDataUrl, isSlugTaken, slugify, updateTenant } from "@/lib/db";
+import { hashTenantPassword } from "@/lib/auth";
 
 export default function AjustesPage() {
   const { tenant, refresh } = useTenant();
@@ -17,6 +18,7 @@ export default function AjustesPage() {
   const [themeColor, setThemeColor] = useState(tenant.themeColor);
   const [logoUrl, setLogoUrl] = useState(tenant.logoUrl);
   const [coverUrl, setCoverUrl] = useState(tenant.coverUrl);
+  const [newPassword, setNewPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -42,6 +44,10 @@ export default function AjustesPage() {
       setError("Completá el nombre del restaurante.");
       return;
     }
+    if (newPassword && newPassword.length < 4) {
+      setError("La nueva contraseña debe tener al menos 4 caracteres.");
+      return;
+    }
     setSaving(true);
     if (await isSlugTaken(finalSlug, tenant.id)) {
       setError("Ese identificador de URL ya está en uso.");
@@ -57,7 +63,9 @@ export default function AjustesPage() {
       themeColor,
       logoUrl,
       coverUrl,
+      ...(newPassword ? { passwordHash: hashTenantPassword(newPassword) } : {}),
     });
+    setNewPassword("");
     setSaving(false);
     setSaved(true);
     if (finalSlug !== tenant.slug) {
@@ -122,6 +130,19 @@ export default function AjustesPage() {
               className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm"
             />
           </div>
+        </div>
+
+        <div>
+          <label className="block text-xs font-medium mb-1">
+            Nueva contraseña del panel (dejar vacío para no cambiarla)
+          </label>
+          <input
+            type="password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm"
+            placeholder="Mínimo 4 caracteres"
+          />
         </div>
 
         <div>

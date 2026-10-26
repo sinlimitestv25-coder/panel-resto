@@ -11,6 +11,7 @@ export type Tenant = {
   coverUrl: string | null;
   address: string;
   phone: string;
+  passwordHash: string;
   createdAt: string;
 };
 

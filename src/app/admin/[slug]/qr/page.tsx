@@ -31,7 +31,7 @@ export default function QrPage() {
         <a
           href={dataUrl}
           download={`qr-${tenant.slug}.png`}
-          className="rounded-lg bg-neutral-900 px-4 py-2 text-sm text-white font-medium hover:bg-neutral-700"
+          className="rounded-lg bg-brand-dark px-4 py-2 text-sm text-white font-medium hover:opacity-90"
         >
           Descargar QR (PNG)
         </a>

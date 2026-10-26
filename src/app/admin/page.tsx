@@ -38,10 +38,22 @@ function AdminHomeContent() {
         <h1 className="text-xl font-semibold">Restaurantes</h1>
         <button
           onClick={() => setShowForm((v) => !v)}
-          className="rounded-lg bg-neutral-900 px-4 py-2 text-sm text-white font-medium hover:bg-neutral-700"
+          className="rounded-lg bg-brand-dark px-4 py-2 text-sm text-white font-medium hover:opacity-90"
         >
           {showForm ? "Cancelar" : "+ Nuevo restaurante"}
         </button>
+      </div>
+
+      <div className="rounded-xl border border-neutral-200 bg-white p-4 flex items-center gap-3">
+        <div className="h-10 w-10 rounded-lg bg-brand-green/10 text-brand-green-dark flex items-center justify-center font-semibold">
+          {tenants.length}
+        </div>
+        <div>
+          <div className="font-medium">
+            {tenants.length === 1 ? "restaurante activo" : "restaurantes activos"}
+          </div>
+          <div className="text-xs text-neutral-500">Total de restaurantes cargados en RestoGo.</div>
+        </div>
       </div>
 
       {showForm && (
@@ -91,6 +103,8 @@ function NewTenantForm({ onCreated }: { onCreated: () => void }) {
   const [themeColor, setThemeColor] = useState("#b45309");
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const [coverUrl, setCoverUrl] = useState<string | null>(null);
+  const [username, setUsername] = useState("");
+  const [usernameEdited, setUsernameEdited] = useState(false);
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
@@ -101,6 +115,11 @@ function NewTenantForm({ onCreated }: { onCreated: () => void }) {
     const finalSlug = slugify(slug || name);
     if (!name.trim() || !finalSlug) {
       setError("Completá el nombre del restaurante.");
+      return;
+    }
+    const finalUsername = (username || finalSlug).trim();
+    if (!finalUsername) {
+      setError("Completá el usuario para el panel del restaurante.");
       return;
     }
     if (password.length < 4) {
@@ -122,6 +141,7 @@ function NewTenantForm({ onCreated }: { onCreated: () => void }) {
       coverUrl,
       address: address.trim(),
       phone: phone.trim(),
+      username: finalUsername,
       passwordHash: hashTenantPassword(password),
     });
     setSaving(false);
@@ -138,6 +158,7 @@ function NewTenantForm({ onCreated }: { onCreated: () => void }) {
         onNameChange={(v) => {
           setName(v);
           if (!slugEdited) setSlug(slugify(v));
+          if (!usernameEdited) setUsername(slugify(v));
         }}
         slug={slug}
         onSlugChange={(v) => {
@@ -157,26 +178,40 @@ function NewTenantForm({ onCreated }: { onCreated: () => void }) {
         coverUrl={coverUrl}
         onCoverChange={setCoverUrl}
       />
-      <div>
-        <label className="block text-xs font-medium mb-1">
-          Contraseña para el panel del restaurante
-        </label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm"
-          placeholder="Mínimo 4 caracteres"
-        />
-        <p className="mt-1 text-xs text-neutral-400">
-          Se la pasás al restaurante junto con el link /admin/{slug || "su-slug"}.
-        </p>
+      <div className="grid gap-3 sm:grid-cols-2">
+        <div>
+          <label className="block text-xs font-medium mb-1">
+            Usuario para el panel del restaurante
+          </label>
+          <input
+            value={username}
+            onChange={(e) => {
+              setUsernameEdited(true);
+              setUsername(e.target.value);
+            }}
+            className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm"
+            placeholder={slug || "la-esquina"}
+          />
+        </div>
+        <div>
+          <label className="block text-xs font-medium mb-1">Contraseña</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm"
+            placeholder="Mínimo 4 caracteres"
+          />
+        </div>
       </div>
+      <p className="-mt-2 text-xs text-neutral-400">
+        Le pasás al restaurante el link /admin/{slug || "su-slug"} junto con este usuario y contraseña.
+      </p>
       {error && <p className="text-sm text-red-600">{error}</p>}
       <button
         type="submit"
         disabled={saving}
-        className="rounded-lg bg-neutral-900 px-4 py-2 text-sm text-white font-medium hover:bg-neutral-700 disabled:opacity-50"
+        className="rounded-lg bg-brand-dark px-4 py-2 text-sm text-white font-medium hover:opacity-90 disabled:opacity-50"
       >
         Crear restaurante
       </button>

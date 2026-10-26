@@ -130,7 +130,7 @@ function CategoryForm({
       </div>
       <button
         type="submit"
-        className="rounded-lg bg-neutral-900 px-4 py-2 text-sm text-white font-medium hover:bg-neutral-700"
+        className="rounded-lg bg-brand-dark px-4 py-2 text-sm text-white font-medium hover:opacity-90"
       >
         Crear categoría
       </button>
@@ -167,7 +167,7 @@ function CategoryCard({
         <div className="flex gap-3 shrink-0">
           <button
             onClick={() => setShowItemForm((v) => !v)}
-            className="text-sm text-amber-700 hover:underline whitespace-nowrap"
+            className="text-sm text-brand-green-dark hover:underline whitespace-nowrap"
           >
             {showItemForm ? "Cancelar" : "+ Agregar plato"}
           </button>
@@ -264,7 +264,7 @@ function ItemRow({ item, onChange }: { item: MenuItem; onChange: () => void }) {
         <button onClick={toggleAvailable} className="text-neutral-500 hover:underline">
           {item.available ? "Marcar agotado" : "Marcar disponible"}
         </button>
-        <button onClick={() => setEditing(true)} className="text-amber-700 hover:underline">
+        <button onClick={() => setEditing(true)} className="text-brand-green-dark hover:underline">
           Editar
         </button>
         <button onClick={handleDelete} className="text-red-600 hover:underline">
@@ -375,7 +375,7 @@ function ItemForm({
       <button
         type="submit"
         disabled={saving}
-        className="rounded-lg bg-neutral-900 px-4 py-2 text-sm text-white font-medium hover:bg-neutral-700 disabled:opacity-50"
+        className="rounded-lg bg-brand-dark px-4 py-2 text-sm text-white font-medium hover:opacity-90 disabled:opacity-50"
       >
         {existing ? "Guardar cambios" : "Agregar plato"}
       </button>

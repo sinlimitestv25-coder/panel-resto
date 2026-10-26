@@ -25,7 +25,7 @@ export default function TenantOverview() {
             <Link
               href={`/${tenant.slug}`}
               target="_blank"
-              className="inline-block text-sm text-amber-700 underline"
+              className="inline-block text-sm text-brand-green-dark underline"
             >
               Ver menú público ↗
             </Link>

@@ -13,8 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Panel Resto",
-  description: "Panel multitenant para menús de restaurantes",
+  title: "RestoGo",
+  description: "Gestión gastronómica: menú digital, fotos y QR para tu restaurante",
+  icons: { icon: "/logo-restogo.png" },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

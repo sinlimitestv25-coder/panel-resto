@@ -24,6 +24,7 @@ export function buildSeed(): Db {
       coverUrl: null,
       address: "Av. Siempre Viva 123",
       phone: "+54 9 11 1234-5678",
+      username: "la-esquina",
       passwordHash: simpleHash("esquina123"),
       createdAt: now,
     },

@@ -1,36 +1,25 @@
-# v0.5 — Copia completa y autónoma ✅
+# v0.6.1 — Entrada directa al login + usuario de administrador precargado ✅
 
-Esta carpeta es un **proyecto completo**, no un parche. Se probó de cero
-(`npm install` + `npm run build`) y compiló sin errores.
+Copia completa, probada de cero (`npm install` + `npm run build`).
 
-## ⚠️ Importante antes de subir esta versión
-Tu repo en GitHub (`panel-resto`) todavía tiene una carpeta vieja colgada
-de antes, `src/app/admin/[tenantId]/`, que ninguna versión nueva puede
-borrar por sí sola (subir archivos arrastrándolos en GitHub nunca borra,
-solo agrega/actualiza). Es un paso de una sola vez:
+## Qué trae esta versión
+- **Sin pantalla intermedia**: antes, al entrar al sitio (`/`) aparecía una
+  landing con el logo y un botón "Entrar al panel". Ahora `/` lleva directo
+  a la pantalla de acceso de administrador (la dividida: marca de un lado,
+  usuario y contraseña del otro) — es lo primero que se ve al abrir el
+  sitio.
+- **Usuario de administrador precargado**: la primera vez que se abre la
+  app (sin ningún usuario creado todavía) se precarga automáticamente:
+  - Usuario: `rodrigo.mansilla@restogo.com`
+  - Contraseña: `restogo123`
 
-1. En github.com, entrá a tu repo y borrá la carpeta `src/app/admin/[tenantId]`
-   completa (podés abrir el editor del navegador apretando `.` y borrarla
-   de un clic).
-2. Recién ahí arrastrá esta carpeta (`versiones/v0.5`) para subirla.
+  Ya no hace falta pasar por la pantalla de "Creá tu acceso" — se puede
+  entrar directo con esos datos. Si en ese navegador ya existía un usuario
+  creado antes, no se toca (la precarga solo actúa cuando no hay ninguno).
 
-Después de este único paso, no debería volver a pasar — mientras ninguna
-versión futura vuelva a renombrar o sacar una carpeta.
-
-## Qué cambió en esta versión
-- Se sacaron del proyecto los íconos de ejemplo que trae Next.js por
-  defecto (`public/file.svg`, `globe.svg`, `next.svg`, `vercel.svg`,
-  `window.svg`) — no se usaban en ninguna pantalla, era basura del
-  scaffolding inicial.
-
-## Qué incluye (acumulado de todas las versiones hasta acá)
-Igual que v0.4.1 (ver `versiones/v0.4.1/NOTAS.md` para el detalle completo
-de funcionalidades): panel multitenant con login, alta de restaurante
-completa, menú por categorías con fotos, galería, QR, menú público
-mobile-first, panel admin revisado para celular.
-
-## Cómo usarla
-1. Hacé la limpieza de arriba (una sola vez).
-2. Copiá toda esta carpeta a tu repo (o reemplazá el contenido entero).
-3. `npm install`.
-4. `npm run dev` para probar local, o subila a GitHub/Vercel.
+## Importante
+- Sigue siendo un gate simple en el navegador (localStorage/sessionStorage),
+  no seguridad real — eso llega con Supabase. La contraseña es la que pidió
+  el usuario ("no importa"), se puede cambiar más adelante sin problema.
+- Demo restaurante "La Esquina": usuario `la-esquina`, contraseña
+  `esquina123` (sin cambios).

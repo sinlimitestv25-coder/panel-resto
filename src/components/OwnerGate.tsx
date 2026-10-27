@@ -5,11 +5,15 @@ import {
   endOwnerSession,
   hasOwnerPassword,
   isOwnerSession,
+  seedOwnerCredentialsIfNeeded,
   setOwnerCredentials,
   startOwnerSession,
   verifyOwnerCredentials,
 } from "@/lib/auth";
 import AuthSplitScreen from "./AuthSplitScreen";
+
+const DEFAULT_OWNER_USERNAME = "rodrigo.mansilla@restogo.com";
+const DEFAULT_OWNER_PASSWORD = "restogo123";
 
 export default function OwnerGate({ children }: { children: React.ReactNode }) {
   const [ready, setReady] = useState(false);
@@ -17,6 +21,7 @@ export default function OwnerGate({ children }: { children: React.ReactNode }) {
   const [authed, setAuthed] = useState(false);
 
   useEffect(() => {
+    seedOwnerCredentialsIfNeeded(DEFAULT_OWNER_USERNAME, DEFAULT_OWNER_PASSWORD);
     setNeedsSetup(!hasOwnerPassword());
     setAuthed(isOwnerSession());
     setReady(true);

@@ -34,6 +34,15 @@ export function setOwnerCredentials(username: string, password: string) {
   window.localStorage.setItem(OWNER_PW_KEY, simpleHash(password));
 }
 
+// Precarga un usuario de administrador la primera vez que se abre la app
+// (sin esto, cada instalación nueva pide crear uno desde cero). Si ya hay
+// uno creado, no lo toca.
+export function seedOwnerCredentialsIfNeeded(username: string, password: string) {
+  if (!hasOwnerPassword()) {
+    setOwnerCredentials(username, password);
+  }
+}
+
 export function verifyOwnerCredentials(username: string, password: string): boolean {
   const storedUser = window.localStorage.getItem(OWNER_USER_KEY);
   const storedHash = window.localStorage.getItem(OWNER_PW_KEY);

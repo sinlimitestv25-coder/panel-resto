@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/* Modo oscuro por clase (no por preferencia del sistema), para poder
+   activarlo solo dentro de la carta pública sin afectar el panel admin. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #ffffff;
   --foreground: #171717;

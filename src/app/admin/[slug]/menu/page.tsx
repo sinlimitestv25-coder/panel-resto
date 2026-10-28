@@ -12,7 +12,7 @@ import {
   listItems,
   updateItem,
 } from "@/lib/db";
-import { MENU_SECTIONS, type Category, type MenuItem, type MenuSection } from "@/lib/types";
+import { DIETARY_TAGS, MENU_SECTIONS, type Category, type DietaryTag, type MenuItem, type MenuSection } from "@/lib/types";
 
 export default function MenuPage() {
   const { tenant } = useTenant();
@@ -292,7 +292,15 @@ function ItemForm({
   const [description, setDescription] = useState(existing?.description ?? "");
   const [price, setPrice] = useState(existing?.price?.toString() ?? "");
   const [imageUrl, setImageUrl] = useState<string | null>(existing?.imageUrl ?? null);
+  const [dietaryTags, setDietaryTags] = useState<DietaryTag[]>(existing?.dietaryTags ?? []);
+  const [ingredients, setIngredients] = useState(existing?.ingredients ?? "");
   const [saving, setSaving] = useState(false);
+
+  function toggleDietaryTag(tag: DietaryTag) {
+    setDietaryTags((prev) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
+    );
+  }
 
   async function handleImage(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -311,6 +319,8 @@ function ItemForm({
       description: description.trim(),
       price: Number(price) || 0,
       imageUrl,
+      dietaryTags,
+      ingredients: ingredients.trim(),
       available: existing?.available ?? true,
       order: existing?.order ?? nextOrder,
     };
@@ -371,6 +381,34 @@ function ItemForm({
           className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm"
           rows={2}
         />
+      </div>
+      <div>
+        <label className="block text-xs font-medium mb-1">Ingredientes principales</label>
+        <input
+          value={ingredients}
+          onChange={(e) => setIngredients(e.target.value)}
+          placeholder="Ej: pan de campo, jamón natural, queso cremoso"
+          className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm"
+        />
+      </div>
+      <div>
+        <label className="block text-xs font-medium mb-1">Etiquetas (se ven en el menú público)</label>
+        <div className="flex flex-wrap gap-2">
+          {DIETARY_TAGS.map((tag) => (
+            <button
+              key={tag.value}
+              type="button"
+              onClick={() => toggleDietaryTag(tag.value)}
+              className={`px-2.5 py-1 rounded-lg text-xs font-medium border transition ${
+                dietaryTags.includes(tag.value)
+                  ? "bg-brand-green/10 border-brand-green text-brand-green-dark"
+                  : "border-neutral-300 text-neutral-600 hover:bg-neutral-100"
+              }`}
+            >
+              {tag.icon} {tag.label}
+            </button>
+          ))}
+        </div>
       </div>
       <button
         type="submit"

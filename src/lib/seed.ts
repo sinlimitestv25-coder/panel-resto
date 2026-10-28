@@ -48,6 +48,8 @@ export function buildSeed(): Db {
       imageUrl: null,
       available: true,
       order: 0,
+      dietaryTags: [],
+      ingredients: "Pan de campo, jamón natural, queso cremoso, manteca.",
     },
     {
       id: "item-2",
@@ -59,6 +61,8 @@ export function buildSeed(): Db {
       imageUrl: null,
       available: true,
       order: 1,
+      dietaryTags: ["vegetarian"],
+      ingredients: "Café, leche, medialunas de manteca.",
     },
     {
       id: "item-3",
@@ -70,6 +74,8 @@ export function buildSeed(): Db {
       imageUrl: null,
       available: true,
       order: 0,
+      dietaryTags: [],
+      ingredients: "Milanesa de carne o pollo, papas fritas o puré, limón.",
     },
     {
       id: "item-4",
@@ -81,6 +87,8 @@ export function buildSeed(): Db {
       imageUrl: null,
       available: true,
       order: 0,
+      dietaryTags: ["vegan", "gf", "sf"],
+      ingredients: "Limón, menta fresca, agua, hielo.",
     },
     {
       id: "item-5",
@@ -92,6 +100,8 @@ export function buildSeed(): Db {
       imageUrl: null,
       available: true,
       order: 0,
+      dietaryTags: ["vegetarian", "gf"],
+      ingredients: "Huevo, leche, azúcar, dulce de leche, crema.",
     },
   ];
 

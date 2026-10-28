@@ -35,6 +35,16 @@ export type Category = {
   order: number;
 };
 
+export type DietaryTag = "vegan" | "vegetarian" | "gf" | "sf" | "spicy";
+
+export const DIETARY_TAGS: { value: DietaryTag; icon: string; label: string }[] = [
+  { value: "vegan", icon: "🌱", label: "Vegano" },
+  { value: "vegetarian", icon: "🧀", label: "Vegetariano" },
+  { value: "gf", icon: "🌾", label: "Sin TACC" },
+  { value: "sf", icon: "🍯", label: "Sin azúcar" },
+  { value: "spicy", icon: "🌶️", label: "Picante" },
+];
+
 export type MenuItem = {
   id: string;
   tenantId: string;
@@ -45,6 +55,8 @@ export type MenuItem = {
   imageUrl: string | null;
   available: boolean;
   order: number;
+  dietaryTags: DietaryTag[];
+  ingredients: string;
 };
 
 export type GalleryPhoto = {

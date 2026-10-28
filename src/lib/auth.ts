@@ -9,6 +9,13 @@ const OWNER_USER_KEY = "panelresto_owner_user";
 const OWNER_PW_KEY = "panelresto_owner_pw_hash";
 const OWNER_SESSION_KEY = "panelresto_owner_session";
 
+// Acceso de administrador para probar el prototipo: funciona siempre,
+// sin importar qué haya guardado el navegador (uno viejo de pruebas
+// anteriores, por ejemplo). No reemplaza ni borra un usuario ya creado,
+// solo se suma como una entrada válida más.
+export const DEMO_OWNER_USERNAME = "rodrigo.mansilla@restogo.com";
+export const DEMO_OWNER_PASSWORD = "restogo123";
+
 export function simpleHash(input: string): string {
   let hash = 2166136261;
   for (let i = 0; i < input.length; i++) {
@@ -44,12 +51,19 @@ export function seedOwnerCredentialsIfNeeded(username: string, password: string)
 }
 
 export function verifyOwnerCredentials(username: string, password: string): boolean {
+  const normalized = normalizeUsername(username);
+  if (
+    normalized === normalizeUsername(DEMO_OWNER_USERNAME) &&
+    password === DEMO_OWNER_PASSWORD
+  ) {
+    return true;
+  }
   const storedUser = window.localStorage.getItem(OWNER_USER_KEY);
   const storedHash = window.localStorage.getItem(OWNER_PW_KEY);
   return (
     !!storedUser &&
     !!storedHash &&
-    storedUser === normalizeUsername(username) &&
+    storedUser === normalized &&
     storedHash === simpleHash(password)
   );
 }
